@@ -1,4 +1,7 @@
 <?
+
+wedwedwed
+w
 eddsc();
 echo("dd");
 //dsf sdf
