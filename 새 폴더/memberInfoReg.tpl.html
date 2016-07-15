@@ -1,0 +1,260 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>딜러회원정보</title>
+<meta name="author" content="㈜인터넷교차로" />
+<meta name="keywords" content="교차로 icross 인터넷 교차로 생활 정보신문 생활검색" />
+<meta name="description" content="생활검색(생활정보, 블로그, 웹사이트), 교차로신문(박스광고, 줄광고검색, PDF서비스), 부동산(부동산매물, 아파트단지정보, 시세, 이사견적, 중개업소), 자동차(중고차매물, 신차정보, 딜러페이지, 전문가상담), 취업(채용정보, 인재정보, 아르바이트정보), 뉴스(교차로저널, 지역신문, 신문사별 뉴스이동), 옐로우페이지(전화번호검색, 우편번호검색, 홍보마당), 114, 생활상식, 맛집, 스트리트, 문자서비스, 지도, 운세 등 발빠른 생활정보를 제공합니다" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="Now" />
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<!--<link rel="stylesheet" href="../css/basic.css" >
+<link rel="stylesheet" href="../css/dealer.css" >-->
+<style type="text/css">
+.dealer_info tr td { line-height:18px; }
+strong.tc { color:#002a80; }
+</style>
+</head>
+
+<body>
+<form name="dealerReg" id="dealerReg" method='post' action="memberProc.php" enctype="multipart/form-data">
+<input type="hidden" id="baseurl" value="{{$smarty.const._LOCATION_ROOT_URL}}" />
+<input type='hidden' id="zipcode" name='zipcode'  value='{{$data.zip.0}}-{{$data.zip.1}}' />
+<input type='hidden' id="zipcode1" name='zipcode1'  value='{{$data.zip.0}}' />
+<input type='hidden' id="zipcode2" name='zipcode2'  value='{{$data.zip.1}}' />
+<input type='hidden' id="mapx" name='mapx'  value='{{$data.mapx}}' />
+<input type='hidden' id="mapy" name='mapy'  value='{{$data.mapy}}' />
+<input type='hidden' id="id" name='id'  value='{{$data.id}}' />
+<input type='hidden' id="kcrid" name='kcrid'  value='{{$domain->kcrid}}' />
+<input type='hidden' id="domainkey" name='domainkey'  value='{{$domain->keycode}}' />
+<input type='hidden' id="rettype" name='rettype'  value='{{$smarty.get.rettype}}' />
+<input type='hidden' id="tgp" name='tgp'  value='{{$smarty.get.tgp}}' />
+<input type='hidden' id="page" name='page'  value='{{$smarty.get.page}}' />
+<input type='hidden' id="returl" name='returl'  value='{{$smarty.get.returl}}' />
+<div class="dealer_wrap">
+	<div class="dealer_title">
+		딜러정보 등록 및 수정 &nbsp;&nbsp;
+		<span class="asterrisk">*</span>
+		<span class="required_input">필수입력 사항 표시</span>
+	</div>
+	<table class="dealer_info" cellpadding="0" cellspacing="0">
+		<tr>
+			<td class="infotitle id"><span class="asterrisk">*</span> 아이디</td>
+			<td class="infotext">{{$id}}</td>
+				
+		</tr>
+		<tr>
+			<td class="infotitle name"><span class="asterrisk">*</span> 성명</td>
+			<td class="infotext" ><input type="text" size="20" id='name' name='name' value="{{$data.name}}"/></td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">매매상사명</strong></td>
+			<td class="infotext">
+				<input type="text" size="40" id='coname' name='coname' value="{{$data.coname}}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">사업자번호</strong></td>
+			<td class="infotext">
+				<input type="text" id='companynum' name='companynum' size="15" value="{{$data.companynum}}"/> 
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><span class="asterrisk">*</span><strong class="tc">매매상사 연락처</strong></td>
+			<td class="infotext">
+				<select id="pertel" name="pertel">
+					<option value=''>선택</option>
+					{{foreach name=pt1 item=pertel1 from=$tel key=key}}
+					<option value='{{$pertel1}}' {{if ($data.pertel.0 == $pertel1) }} selected {{/if}}>{{$pertel1}}</option>
+					{{/foreach}}
+				</select> - 
+				<input type="text" name="pertel2" id="pertel2" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.pertel.1}}' /> - 
+				<input type="text" name="pertel3" id="pertel3" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.pertel.2}}' />
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><span class="asterrisk">*</span><strong class="tc">매매상사 주소</strong></td>
+			<td class="infotext">
+				<input class="btnstyle3_t4" type="button" onClick = "openZipcode();" value="주소검색" />
+				<input type="text" id="addr" name="addr" size="50" value="{{$data.addr1}}"  readOnly="readonly"  />
+				<div style="padding:5px;">
+				<strong class="fontsize11">상세주소</strong>&nbsp; <input id="detaddr" name="detaddr" type="text" size="30" value="{{$data.addr2}}"/>
+				<input type='button' name='mapsearchbtn' value='지도표시' onclick="drawMap();" class="btn_style3_t4" /> <span class="ex">해당주소의 위치로 지도가 이동합니다.</span>
+				</div>
+				<!--&nbsp;&nbsp;<a href="#" onClick="setMap('addr');" onBlur="document.getElementsByName('map').focus;">지도보기</a>-->
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">사원증번호<strong></td>
+			<td class="infotext">
+				<input type="text" size="20" id='dealernum' name='dealernum' value="{{$data.dealernum}}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">휴대폰</strong></td>
+			<td class="infotext">
+				<select id="percell" name="percell">
+					<option value=''>선택</option>
+					{{foreach name=pc1 item=percell1 from=$cell key=key}}
+	                <option value='{{$percell1}}' {{if ($data.percell.0 == $percell1)}}selected{{/if}}>{{$percell1}}</option>
+	                {{/foreach}}
+				</select> - 
+				<input type='text' name="percell2" id="percell2" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.percell.1}}' /> - 
+				<input type='text' name="percell3" id="percell3" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.percell.2}}' />
+				{{*<span class="explain_gray12"> &nbsp;&nbsp;임시 비밀번호 재 발급 시 이용됩니다.</span>*}}
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">매매사업조합명</strong></td>
+			<td class="infotext">
+				<input type="text" id='unionname' name='unionname' size="40" value="{{$data.unionname}}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle"><strong class="tc">매매사업조합 전화번호<strong></td>
+			<td class="infotext">
+				<select id='uniontel' name='uniontel'>
+					<option value=''>선택</option>
+					{{foreach name=ut item=uniontel1 from=$tel key=key}}
+					<option value='{{$uniontel1}}' {{if ($data.untel.0 == $uniontel1)}}selected{{/if}}>{{$uniontel1}}</option>
+					{{/foreach}}
+				</select> - 
+				<input type="text" name="uniontel2" id="uniontel2" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.untel.1}}' /> -	<input type="text" size="4" name="uniontel3" id="uniontel3" size="5" maxlength="4" onKeyDown="onlyNumber(event, true, false, this.value);" value='{{$data.untel.2}}'/>
+			</td>
+		</tr>
+		<!--<tr>
+			<td class="infotitle">지도표시</td>
+			<td class="infotext roughmap" id="map" name="map">
+				<span class="map_ex">사업장의 위치를 정확히 표시하시면 더욱 큰 홍보 효과를 누리실수 있습니다.</span><br />
+{{*
+				<input type="radio" id="rd_map_0" name="ckb_map_ok" value="d" onclick="setMap('addr');" onfocus="setMap('addr');"{{if ($offer->map_ok == 'd')}} checked="checked"{{/if}} /><label for="rd_map_0">동/읍/면 위치만 표시</label> 
+				<input type="radio" id="rd_map_1" name="ckb_map_ok" value="y" onclick="setMap('addr');" onfocus="setMap('addr');"{{if ( ($offer->map_ok == '') || ($offer->map_ok == 'y') )}} checked="checked"{{/if}} /><label for="rd_map_1">상세주소 위치까지 표시</label>
+				<input type="radio" id="rd_map_2" name="ckb_map_ok" value="n"{{if ($offer->map_ok == 'n')}} checked="checked"{{/if}} /><label for="rd_map_2">지도노출 안함</label><br /><br />
+*}}
+				<input type="hidden" id="rd_map" name="ckb_map_ok" value="y" />
+		        <iframe id="mappoint" src="/sem/include/lib/mapPoint.php?mode=addr&first=yes&addr1={{$data.addr1|encodeURI}}&addr2={{$data.addr2|encodeURI}}&x={{$data.mapx}}&y={{$data.mapy}}" frameborder="0" width="705" height="430" scrolling="no" style="height:430px;overflow:hidden;margin:0;padding:0;"></iframe>
+				<br />
+				<span class="qmap">지도 바로가기:</span>
+				<a href="#" onClick="moveAddrPoint(); return rFalse();"><img src="http://img.{{$smarty.const._AUTO_LOCATION_QDN_URL}}/autonew/btn/btn_check.gif" width="172" height="22" alt="입력하신 주소를 통해 검색된 위치로 지도를 이동 합니다." /></a>
+				<a href="#" onClick="moveUserPoint(); return rFalse();"><img src="http://img.{{$smarty.const._AUTO_LOCATION_QDN_URL}}/autonew/btn/btn_arrow.gif" width="181" height="22" alt="포인터를 지정하신 위치로 지도를 이동합니다." /></a>
+				<a href="#" onClick="setPointToCenter(); return rFalse();"><img src="{{$smarty.const._AUTO_LOCATION_IMAGE_URL}}/yp/main/btn_pointer.gif" width="113" height="22" alt="포인터를 지도 중앙으로 가져옵니다." /></a>
+				</td>
+		</tr>-->
+
+		<tr>
+			<td class="infotitle">지도표시</td>
+			<td class="infotext">
+			<iframe id="mapPointFrame" width="550" height="440" src="/sem/include/lib/mapPoint.php?mode=addr&first=yes&addr1={{$data.uriaddr1}}&addr2={{$data.uriaddr2}}&x={{$data.mapx}}&y={{$data.mapy}}" frameborder=0 scrolling=no marginWidth=0 marginHeight=0 ></iframe>
+			<div class="map_qmenu">
+				<span>지도 바로가기:</span>
+				<a href="#" onclick="moveAddrPoint(); return rFalse();"><img src="http://img.{{$smarty.const._AUTO_LOCATION_QDN_URL}}/yp/main/btn_address.gif" width="172" height="22" alt="입력하신 주소를 통해 검색된 위치로 지도를 이동 합니다." /></a>
+				<a href="#" onclick="moveUserPoint(); return rFalse();"><img src="http://img.{{$smarty.const._AUTO_LOCATION_QDN_URL}}/yp/main/btn_user.gif" width="181" height="22" alt="포인터를 지정하신 위치로 지도를 이동합니다." /></a>
+				<a href="#" onclick="setPointToCenter(); return rFalse();"><img src="http://img.{{$smarty.const._AUTO_LOCATION_QDN_URL}}/yp/main/btn_pointer.gif" width="113" height="22" alt="포인터를 지도 중앙으로 가져옵니다." /></a>
+			</div>
+			</td>
+		</tr>		
+		
+		<tr>
+			<td class="infotitle"><span class="asterrisk">*</span> e-mail</td>
+			<td class="infotext">
+				<input type="text" id="email" name='email' size="40" value="{{$data.email}}"/>
+				{{*<span class="explain_gray12"> &nbsp;&nbsp;임시 비밀번호 재 발급 시 이용됩니다.</span>*}}
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="infotitle">홈페이지</td>
+			<td class="infotext">
+				http:// <input type="text" size="80" id='homepage' name='homepage' value="{{$data.homepage}}"/>
+				<div class="explain_gray" style="padding:5px;">개인 홈페이지 및 블로그가 있을경우 주소를 입력하여 홍보하세요</div>
+			</td>
+		</tr>
+
+		<!--tr>
+			<td class="infotitle">매물보기버튼 노출 여부</td>
+			<td>
+				<input type="radio" name="use_offerbtn" value="1" {{if ($data.use_offerbtn != 0)}}checked="checked"{{/if}}>노출&nbsp;&nbsp; 
+				<input type="radio" name="use_offerbtn" value="0" {{if ($data.use_offerbtn == 0)}}checked="checked"{{/if}}>비노출
+			</td>
+		</tr-->
+		
+		{{if $mode == 'mod'}}
+		<tr>
+			<td class="infotitle">매물정보변경</td>
+			<td class="infotext">
+				<input type="checkbox" id='agchk' name='agchk' value="1" /> 
+				 * 체크시 기존등록된 매물에도 수정된 회원정보가 적용이 됩니다.<br />
+				등록된 매물의 연락처를 위의 수정된 연락처로 변경을 원하실 경우 체크하세요.<br />
+				{{if $data.memtype == 3}}
+				<font color="red">! 모든 매물이 동일한 연락처로 바뀌므로 원치않는 경우 체크하지 마세요</font>
+				{{/if}}
+
+			</td>
+		</tr>
+		{{/if}}
+		<tr>
+			<td class="infotitle">사진</td>
+			<td class="infotext">
+				<input type="hidden" id="banner_idx" name="banner_idx" value="{{$data.banneridx}}" />
+				<div id="file_con_dis"></div>
+				<!-- 이하 업로드 버튼 -->
+				<div id="fileupload" class="fileupload"> 
+					<strong>파일 업로드</strong>
+					<div class="filename"><span id="fileorgname"></span></div>
+						<dl>
+							<dt class="progress"><div id="uploadprogressbar" class="uploadprogressbar"></div></dt> 
+							<dd class="count"><span id="uploadnowfilesize">0</span> / <span id="uploadfilesize" class="uploadfilesize">0</span> byte</dd>
+						</dl>
+				</div>
+
+
+				<div class="imgsearch">
+					<!--input type="file" id="banner" name="banner" onChange="imgUpload('{{$uploadIdx}}', 'banner', 'dealerReg', 'ifrm_img_upload', 'banner_dir', 'img_banner');" size="39" /-->
+				{{if (($mode == 'mod') && ($data.dealerimg))}}
+					<input type="checkbox" id="banner_del" name="banner_del" value="1" /><label for="banner_del">파일삭제</label>
+				{{/if}}
+				</div>
+				<input type="hidden" id="banner_dir" name="banner_dir" value="{{if (($mode == 'mod') && ($data.dealerimg))}}{{$smarty.const._DEALER_LOCATION_BANNER_URL}}/{{$data.dealerimg}}{{/if}}" class="img_spon_bn" />
+				<div id="retval"></div>
+				<div class="banner_wrap"><!-- 테섭에 이미지 없어 강제로 icross주소 넣음 121204 -->
+					<img id="img_banner" src="{{if (($mode == 'mod') && ($data.dealerimg))}}{{$smarty.const._DEALER_LOCATION_BANNER_URL}}/{{$data.dealerimg}}{{else}}http://img.icross.co.kr/autonew/element/ele_bd_photoimg.gif{{/if}}" style="width:{{$smarty.const._DEALER_BANNER_WIDTH}}px; height:{{$smarty.const._DEALER_BANNER_HEIGHT}}px; border:1px solid #ddd;" title="프로필배너" />
+				</div>
+				<div class="explain_gray" style="margin:10px 0 0 0;padding;5px;">
+				매물보기 우측의 등록자정보에 노출되는 사진으로 인물사진을 등록해주시기 바라며,<br />
+				그외 사진을 등록했을시 관리자에 의해 통보없이 삭제될 수도 있습니다.<br /><br />
+
+					사진등록은 JPG, GIF 파일만 가능하며, 파일의 용량은 500KB 이하여야 합니다.<br />
+				(노출 이미지 사이즈 : {{$smarty.const._DEALER_BANNER_WIDTH}} * {{$smarty.const._DEALER_BANNER_HEIGHT}})
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="infotitle">인사말</td>
+			<td class="infotext">
+				<textarea class="salutation_area" id='intro' name='intro' maxlength="250">{{$data.intro}}</textarea><br /> 
+				<span class="explain_gray12">125자 이내 등록가능</span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:center;">
+				<!-- 이하 파일 입력 url -->
+				<input type="hidden" id="fileUpUrl" name="fileUpUrl" value="http://{{$xmlrpcIP}}/~xmlrpc"/>
+				<input type="hidden" id="fileViewUrl" name="fileViewUrl" value="http://{{$xmlrpcVIP}}/~xmlrpc/files"/>
+				<input type="hidden" id="fileInfo1" name="fileInfo1" value="" />
+				<input type="hidden" id="fileInfo2" name="fileInfo2" value="" />
+
+				<input type="button" class="btnstyle5_t2" id="input_ok" name="input_ok" value="{{if ($mode == 'mod')}}수정{{else}}확인{{/if}}" {{if ($mode == 'mod')}}onclick="dealerchk(2);"{{else}}onclick="dealerchk(1);"{{/if}} />&nbsp;
+				<input type="button" class="btnstyle5_t2" id="input_no" id="input_no" value="취소"{{if ($smarty.get.mode=='insert')}} onClick="opener.location.href='/mgr/special_service.php'; self.close();" {{else}} {{if ($smarty.get.rettype=='sponsor' || $smarty.get.rettype=='admin' )}}  onClick="self.close();" {{else}} {{if ($mode=='mod') }} onClick="window.open('', '_self').close();" {{else}} onClick="document.location.href='/mgr/special_service.php'" {{/if}} {{/if}}{{/if}}/>
+			</td>
+		</tr>
+	</table>
+</div>
+</form>
+</body>
+</html>
+
+
