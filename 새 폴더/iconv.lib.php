@@ -4,6 +4,7 @@ wedwedwed
 w
 explo
 eddsc();
+$i=
 echo("dd");
 //dsf sdf
 /*
